@@ -1,0 +1,159 @@
+[gd_scene load_steps=7 format=3 uid="uid://main_scene"]
+
+[ext_resource type="Script" path="res://scripts/game_manager.gd" id="1_game_manager"]
+[ext_resource type="Script" path="res://scripts/destructible_terrain.gd" id="2_terrain"]
+[ext_resource type="Script" path="res://scripts/game_ui.gd" id="3_ui"]
+[ext_resource type="PackedScene" uid="uid://soldier_scene" path="res://scenes/soldier.tscn" id="4_soldier"]
+[ext_resource type="Script" path="res://scripts/main.gd" id="5_main"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_terrain"]
+size = Vector2(1280, 300)
+
+[node name="Main" type="Node2D"]
+script = ExtResource("5_main")
+
+[node name="Background" type="ColorRect" parent="."]
+offset_right = 1280.0
+offset_bottom = 720.0
+color = Color(0.529412, 0.807843, 0.921569, 1)
+
+[node name="GameManager" type="Node" parent="."]
+script = ExtResource("1_game_manager")
+
+[node name="DestructibleTerrain" type="Node2D" parent="."]
+script = ExtResource("2_terrain")
+
+[node name="TerrainSprite" type="Sprite2D" parent="DestructibleTerrain"]
+
+[node name="StaticBody2D" type="StaticBody2D" parent="DestructibleTerrain"]
+collision_layer = 1
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="DestructibleTerrain/StaticBody2D"]
+polygon = PackedVector2Array(0, 420, 1280, 420, 1280, 720, 0, 720)
+
+[node name="Soldiers" type="Node2D" parent="."]
+
+[node name="RedSoldier1" parent="Soldiers" instance=ExtResource("4_soldier")]
+position = Vector2(100, 350)
+
+[node name="RedSoldier2" parent="Soldiers" instance=ExtResource("4_soldier")]
+position = Vector2(200, 350)
+
+[node name="RedSoldier3" parent="Soldiers" instance=ExtResource("4_soldier")]
+position = Vector2(150, 350)
+
+[node name="RedSoldier4" parent="Soldiers" instance=ExtResource("4_soldier")]
+position = Vector2(250, 350)
+
+[node name="BlueSoldier1" parent="Soldiers" instance=ExtResource("4_soldier")]
+position = Vector2(1000, 350)
+team = 1
+
+[node name="BlueSoldier2" parent="Soldiers" instance=ExtResource("4_soldier")]
+position = Vector2(1100, 350)
+team = 1
+
+[node name="BlueSoldier3" parent="Soldiers" instance=ExtResource("4_soldier")]
+position = Vector2(1050, 350)
+team = 1
+
+[node name="BlueSoldier4" parent="Soldiers" instance=ExtResource("4_soldier")]
+position = Vector2(1150, 350)
+team = 1
+
+[node name="GameUI" type="CanvasLayer" parent="."]
+script = ExtResource("3_ui")
+
+[node name="TurnLabel" type="Label" parent="GameUI"]
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 300.0
+offset_bottom = 50.0
+theme_override_font_sizes/font_size = 24
+text = "Red Team - Soldier 1"
+
+[node name="WeaponLabel" type="Label" parent="GameUI"]
+offset_left = 20.0
+offset_top = 55.0
+offset_right = 300.0
+offset_bottom = 85.0
+theme_override_font_sizes/font_size = 18
+text = "Weapon: Gun"
+
+[node name="HealthLabel" type="Label" parent="GameUI"]
+offset_left = 20.0
+offset_top = 95.0
+offset_right = 100.0
+offset_bottom = 115.0
+text = "Health:"
+
+[node name="HealthBar" type="ProgressBar" parent="GameUI"]
+offset_left = 80.0
+offset_top = 95.0
+offset_right = 280.0
+offset_bottom = 115.0
+max_value = 100.0
+value = 100.0
+show_percentage = false
+
+[node name="MovementLabel" type="Label" parent="GameUI"]
+offset_left = 20.0
+offset_top = 120.0
+offset_right = 100.0
+offset_bottom = 140.0
+text = "Movement:"
+
+[node name="MovementBar" type="ProgressBar" parent="GameUI"]
+offset_left = 100.0
+offset_top = 120.0
+offset_right = 280.0
+offset_bottom = 140.0
+max_value = 200.0
+value = 200.0
+show_percentage = false
+
+[node name="ControlsLabel" type="Label" parent="GameUI"]
+offset_left = 900.0
+offset_top = 20.0
+offset_right = 1260.0
+offset_bottom = 150.0
+theme_override_font_sizes/font_size = 14
+text = "Controls:
+Arrow Keys - Move/Jump
+Space - Attack/Fire
+W/S - Aim Up/Down
+1/2/3 - Switch Weapon
+Enter - End Turn"
+
+[node name="GameOverPanel" type="Panel" parent="GameUI"]
+visible = false
+offset_left = 390.0
+offset_top = 260.0
+offset_right = 890.0
+offset_bottom = 460.0
+
+[node name="WinnerLabel" type="Label" parent="GameUI/GameOverPanel"]
+layout_mode = 0
+offset_left = 50.0
+offset_top = 60.0
+offset_right = 450.0
+offset_bottom = 140.0
+theme_override_font_sizes/font_size = 48
+text = "Red Team Wins!"
+horizontal_alignment = 1
+
+[node name="RestartLabel" type="Label" parent="GameUI/GameOverPanel"]
+layout_mode = 0
+offset_left = 100.0
+offset_top = 150.0
+offset_right = 400.0
+offset_bottom = 180.0
+theme_override_font_sizes/font_size = 18
+text = "Press R to Restart"
+horizontal_alignment = 1
+
+[node name="KillZone" type="Area2D" parent="."]
+position = Vector2(640, 750)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="KillZone"]
+shape = SubResource("RectangleShape2D_terrain")

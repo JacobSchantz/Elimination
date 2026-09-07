@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://grenade_scene"]
+
+[ext_resource type="Script" path="res://scripts/grenade.gd" id="1_grenade"]
+[ext_resource type="Script" path="res://scripts/grenade_visual.gd" id="2_visual"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_grenade"]
+radius = 8.0
+
+[node name="Grenade" type="RigidBody2D"]
+collision_layer = 4
+collision_mask = 1
+gravity_scale = 1.5
+script = ExtResource("1_grenade")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_grenade")
+
+[node name="Visual" type="Node2D" parent="."]
+script = ExtResource("2_visual")
